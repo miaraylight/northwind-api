@@ -123,7 +123,7 @@ import java.util.List;
             return product;
         }
 
-        public Product update(Product product) {
+        public Product update(int id, Product product) {
             String query = """
         UPDATE products
         SET ProductName = ?,
@@ -150,7 +150,7 @@ import java.util.List;
                 preparedStatement.setShort(7, product.getUnitsOnOrder());
                 preparedStatement.setShort(8, product.getReorderLevel());
                 preparedStatement.setBoolean(9, product.getDiscontinued());
-                preparedStatement.setInt(10, product.getProductId()); // WHERE clause
+                preparedStatement.setInt(10, id); // WHERE clause
 
                 preparedStatement.executeUpdate();
 
@@ -162,7 +162,7 @@ import java.util.List;
         }
 
         // delete
-        public boolean deleteById(int id) {
+        public void deleteById(int id) {
             String query = "DELETE FROM products WHERE ProductID = ?";
 
             try (Connection connection = dataSource.getConnection();
@@ -171,11 +171,11 @@ import java.util.List;
                 preparedStatement.setInt(1, id);
 
                 int rowsAffected = preparedStatement.executeUpdate();
-                return rowsAffected > 0;
+//                return rowsAffected > 0;
 
             } catch (SQLException e) {
                 e.printStackTrace();
-                return false;
+                // return false;
             }
         }
     }
